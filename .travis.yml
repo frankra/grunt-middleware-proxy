@@ -2,15 +2,15 @@ language: node_js
 node_js:
 - '4.0'
 - iojs
-# after_script: NODE_ENV=test ./node_modules/.bin/istanbul cover ./node_modules/mocha/bin/_mocha
-#   test/**/*spec.js --report lcovonly -R --spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
-#   && rm -rf ./coverage
-# deploy:
-#   provider: npm
-#   email: franktestrlz@gmail.com
-#   api_key:
-#     secure:
-#   on:
-#     tags: false
-#     repo: frankrafael/grunt-middleware-proxy
-#     branch: master
+after_script: NODE_ENV=test ./node_modules/.bin/istanbul cover ./node_modules/mocha/bin/_mocha
+  test/**/*spec.js --report lcovonly -R --spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
+  && rm -rf ./coverage
+deploy:
+  provider: npm
+  email: franktestrlz@gmail.com
+  api_key:
+    secure: I+DKQdzVzYJYGpXsvpKVNBKh7ZAuWKbVrAoz3rEvS22X0OmtkCLVvV62zdnklf43zMx2PDq/zZxe+P2fCNDxwi21AZa6uydYdFW69gk89yBvbQWYtykh/IFd8Aoy3UeKKdOgC0sruwJoMdZs56P+GchASLuBLaU8O948SThKxGikcCkcTNue5sbYc9AsRGBiRJgXEpySRnc4mksAn1l0fwl+0HxRMpw9v2ASMFU4be1jCMjWDaMq5T5vTltnRrqtTOmkk53UfM0CAhG7rmezt4co5YqQB4QxeCVePF04cKVSWuETamXyBmlxiD5519fwwgT0i+f0teAHyPmauhAZvofSdD601M3s7B0DQw7hTotpRL3D/7b6sD5ZzZV2lYblJUI66X02egivN87tMLKteqIHychFJnk1GXqBdC9Qq9XPAo5IGyD6bl8WWM+fk+ZgJs2tHwgjhJ8Xip6OS3GuLD22lWPFHQlVgJ1ZKfMspVZRpv0ZNpZ0q1onxF3EmF4Sub4ADDxrigy+3NfyFnwVZN1/Bac51MIXvJKPm+5LVqCOIGEURsyLTZS6pRHH/d2WBuu8DgkGE//BJTQKrVfJHrj/xxzszk8pmRewqpKi/QHe+nawFIfBtisIEonQiZA7y7w1etFQMcKoEsZmTotakfAZHko9yZ+OfZwpFunJ6zc=
+  on:
+    tags: false
+    repo: frankrafael/grunt-middleware-proxy
+    branch: master

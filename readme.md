@@ -1,1 +1,1 @@
-WIP
+[![Coverage Status](https://coveralls.io/repos/frankrafael/grunt-middleware-proxy/badge.svg?branch=develop&service=github)](https://coveralls.io/github/frankrafael/grunt-middleware-proxy?branch=develop)
