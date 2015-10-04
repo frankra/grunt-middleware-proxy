@@ -18,5 +18,12 @@
   "bugs": {
     "url": "https://github.com/frankrafael/grunt-middleware-proxy/issues"
   },
-  "homepage": "https://github.com/frankrafael/grunt-middleware-proxy#readme"
+  "homepage": "https://github.com/frankrafael/grunt-middleware-proxy#readme",
+  "devDependencies": {
+      "chai": "^3.2.0",
+      "chai-spies": "^0.7.0",
+      "coveralls": "^2.11.4",
+      "istanbul": "^0.3.18",
+      "mocha": "^2.2.5"
+  }
 }
