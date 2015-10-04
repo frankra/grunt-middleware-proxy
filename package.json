@@ -1,0 +1,22 @@
+{
+  "name": "grunt-middleware-proxy",
+  "version": "0.0.1",
+  "description": "grunt-contrib-connect middleware proxy utility",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/frankrafael/grunt-middleware-proxy.git"
+  },
+  "keywords": [
+    "gruntplugin"
+  ],
+  "author": "Rafael Frank <franktestrlz@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/frankrafael/grunt-middleware-proxy/issues"
+  },
+  "homepage": "https://github.com/frankrafael/grunt-middleware-proxy#readme"
+}
