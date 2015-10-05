@@ -4,13 +4,13 @@ var oUtils;
 
 describe("/lib.Utils.prototype - Inspection", function() {
     it("Should be an object",function() {
-		var _oUtils = require('..\\..\\lib\\Utils');
+		var _oUtils = require(process.cwd()+ '/lib/Utils');
 
         chai.expect(typeof _oUtils).to.equal("object");
 	});
 	it("Should be a singleton",function() {
-		var _oUtils = require('..\\..\\lib\\Utils');
-        var _oAnotherUtils = require('..\\..\\lib\\Utils');
+		var _oUtils = require(process.cwd()+ '/lib/Utils');
+        var _oAnotherUtils = require(process.cwd()+ '/lib/Utils');
 
         chai.expect(_oUtils).to.equal(_oAnotherUtils);
 	});
@@ -18,7 +18,7 @@ describe("/lib.Utils.prototype - Inspection", function() {
 });
 describe("/lib.Utils.prototype - API", function() {
     beforeEach(function(){
-        oUtils = require('..\\..\\lib\\Utils');
+        oUtils = require(process.cwd()+ '/lib/Utils');
         oUtils._mProxies = {}; //Reset configs as this is a singleton, creating a new instance wont work...
     });
 
@@ -151,8 +151,8 @@ describe("/lib.Utils.prototype - API", function() {
 
 describe("/lib.Utils.prototype - Proxy Snippet", function() {
     // it("Should have a 'proxyMiddleware' function that proxies requests",function() {
-    //     var oUtils = require('..\\..\\lib\\Utils');
-    //     var oAnotherUtils = require('..\\..\\lib\\Utils');
+    //     var oUtils = require(process.cwd()+ '/lib/Utils');
+    //     var oAnotherUtils = require(process.cwd()+ '/lib/Utils');
     //
     //     chai.expect(oUtils).to.equal(oAnotherUtils);
     // });
