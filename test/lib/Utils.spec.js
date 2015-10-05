@@ -82,8 +82,8 @@ describe("/lib.Utils.prototype - API", function() {
             });
         });
 
-        it("Should receive a 'Proxy Configuration' object and store it internally, its key will be the 'proxied context'",function() {
-            var sProxiedContext = '/api';
+        it("Should receive a 'Proxy Configuration' object and store it internally, on a tree based structure",function() {
+            var sProxiedContext = '/api/to/be/proxied';
             var oProxyMapping = {
                 context : sProxiedContext,
                 host :  'hostserver.com'
@@ -91,11 +91,11 @@ describe("/lib.Utils.prototype - API", function() {
 
             oUtils.addConfig(oProxyMapping);
 
-            chai.expect(oUtils._mProxies[sProxiedContext]).to.equal(oProxyMapping);
+            chai.expect(oUtils._mProxies.api.to.be.proxied.__CONFIG__).to.equal(oProxyMapping);
         });
 
         it("Should throw an error if the same context is proxied twice",function() {
-            var sProxiedContext = '/api';
+            var sProxiedContext = '/api/to/be/proxied';
             var oProxyMapping = {
                 context : sProxiedContext,
                 host :  'hostserver.com',
@@ -114,38 +114,37 @@ describe("/lib.Utils.prototype - API", function() {
     describe("#Add multiple configurations (Grunt)", function() {
         it("Should receive the Array of proxy configurations and store it internally",function() {
             var aConfigs = [{
-                context:'/api1',
+                context:'/api/endpoint1',
                 host:'server1.com'
             },{
-                context:'/api2',
+                context:'/api/endpoint2',
                 host:'server2.com'
             }];
             oUtils.addConfigs(aConfigs);
 
-            chai.expect(Object.keys(oUtils._mProxies).length).to.equal(2);
+            chai.expect(oUtils._mProxies.api.endpoint1.__CONFIG__).to.equal(aConfigs[0]);
+            chai.expect(oUtils._mProxies.api.endpoint2.__CONFIG__).to.equal(aConfigs[1]);
         });
     });
 
-
     describe("#Rewrite", function() {
-        // it("Should retrieve the Proxy configuration for the given URL",function() {
-        //     var sProxiedContext = '/api';
-        //     var oProxyMapping = {
-        //         context : sProxiedContext,
-        //         host :  'hostserver.com',
-        //         port : 44300,
-        //         https : true
-        //     };
-        //
-        //     oUtils.addConfig(oProxyMapping);
-        //
-        //     var sURL = 'localhost:9000/' + sProxiedContext + '/something/to/be/retrieved.js' ;
-        //     var oProxyConfig = oUtils.getProxyConfigFromURL(sURL);
-        //
-        //     chai.expect(oProxyConfig).not.to.equal(undefined);
-        // });
-    });
+        it("Should retrieve the Proxy configuration for the given URL",function() {
+            var sProxiedContext = '/api';
+            var oProxyMapping = {
+                context : sProxiedContext,
+                host :  'hostserver.com',
+                port : 44300,
+                https : true
+            };
 
+            oUtils.addConfig(oProxyMapping);
+
+            var sURL = 'localhost:9000' + sProxiedContext + '/something/to/be/retrieved.js' ;
+            var oProxyConfig = oUtils.getProxyConfigFromURL(sURL);
+
+            chai.expect(oProxyConfig).to.equal(oProxyMapping);
+        });
+    });
 
 });
 
