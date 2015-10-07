@@ -45,14 +45,14 @@ describe("/lib.Utils.prototype - API", function() {
                     oUtils.addConfig(oProxyMapping);
                 }).to.throw('Error defining Proxy. Mandatory property "context" is defined as an empty string on: ' + JSON.stringify(oProxyMapping,2));
             });
-            it("Should throw an error if the 'context' property is a number",function() {
+            it("Should throw an error if the 'context' property is not a string",function() {
                 var oProxyMapping = {
                     context : 21213,
                     host :  'hostserver.com'
                 };
                 chai.expect(function(){
                     oUtils.addConfig(oProxyMapping);
-                }).to.throw('Error defining Proxy. Mandatory property "context" is defined as number on: ' + JSON.stringify(oProxyMapping,2));
+                }).to.throw('Error defining Proxy. Mandatory property "context" is defined with unsupported type number. Expects string on: ' + JSON.stringify(oProxyMapping,2));
             });
             it("Should throw an error if the 'context' property does not start with a '/' slash",function() {
                 var oProxyMapping = {
@@ -89,14 +89,14 @@ describe("/lib.Utils.prototype - API", function() {
                     oUtils.addConfig(oProxyMapping)
                 }).to.throw('Error defining Proxy. Mandatory property "host" is defined as an empty string on: ' + JSON.stringify(oProxyMapping,2));
             });
-            it("Should throw an error if the 'host' property is a number",function() {
+            it("Should throw an error if the 'host' property is an unsupported type",function() {
                 var oProxyMapping = {
                     context : '/api',
                     host :  12321313
                 };
                 chai.expect(function(){
                     oUtils.addConfig(oProxyMapping)
-                }).to.throw('Error defining Proxy. Mandatory property "host" is defined as number on: ' + JSON.stringify(oProxyMapping,2));
+                }).to.throw('Error defining Proxy. Mandatory property "host" is defined with unsupported type number. Expects string on: ' + JSON.stringify(oProxyMapping,2));
             });
             it("Should throw an error if the 'host' property ends with a slash '/'",function() {
                 var oProxyMapping = {
@@ -115,6 +115,69 @@ describe("/lib.Utils.prototype - API", function() {
                 chai.expect(function(){
                     oUtils.addConfig(oProxyMapping)
                 }).to.throw('Error defining Proxy. Mandatory property "host" should not start with a slash "/": ' + JSON.stringify(oProxyMapping,2));
+            });
+
+            describe("#Validation of mandatory fields of 'corpProxy' configuration", function() {
+                it("Should throw an error if the 'host' property is missing",function() {
+                    var oProxyMapping = {
+                        context : '/api',
+                        host: 'www.google.com',
+                        corpProxy : {
+                            //missing host
+                        }
+                    };
+                    chai.expect(function(){
+                        oUtils.addConfig(oProxyMapping)
+                    }).to.throw('Error defining Proxy. Missing mandatory property "host" on: ' + JSON.stringify(oProxyMapping.corpProxy,2));
+                });
+                it("Should throw an error if the 'host' property is an empty string",function() {
+                    var oProxyMapping = {
+                        context : '/api',
+                        host: 'www.google.com',
+                        corpProxy : {
+                            host : ''
+                        }
+                    };
+                    chai.expect(function(){
+                        oUtils.addConfig(oProxyMapping)
+                    }).to.throw('Error defining Proxy. Mandatory property "host" is defined as an empty string on: ' + JSON.stringify(oProxyMapping.corpProxy,2));
+                });
+                it("Should throw an error if the 'host' property is an unsupported type",function() {
+                    var oProxyMapping = {
+                        context : '/api',
+                        host: 'www.google.com',
+                        corpProxy : {
+                            host : 111111
+                        }
+                    };
+                    chai.expect(function(){
+                        oUtils.addConfig(oProxyMapping)
+                    }).to.throw('Error defining Proxy. Mandatory property "host" is defined with unsupported type number. Expects string on: ' + JSON.stringify(oProxyMapping.corpProxy,2));
+                });
+                it("Should throw an error if the 'host' property ends with a slash '/'",function() {
+                    var oProxyMapping = {
+                        context : '/api',
+                        host: 'www.google.com',
+                        corpProxy : {
+                            host : 'proxy/'
+                        }
+                    };
+                    chai.expect(function(){
+                        oUtils.addConfig(oProxyMapping)
+                    }).to.throw('Error defining Proxy. Mandatory property "host" should not end with a slash "/": ' + JSON.stringify(oProxyMapping.corpProxy,2));
+                });
+                it("Should throw an error if the 'host' property starts with a slash '/'",function() {
+                    var oProxyMapping = {
+                        context : '/api',
+                        host: 'www.google.com',
+                        corpProxy : {
+                            host : '/proxy'
+                        }
+                    };
+                    chai.expect(function(){
+                        oUtils.addConfig(oProxyMapping)
+                    }).to.throw('Error defining Proxy. Mandatory property "host" should not start with a slash "/": ' + JSON.stringify(oProxyMapping.corpProxy,2));
+                });
             });
         });
 
@@ -184,8 +247,29 @@ describe("/lib.Utils.prototype - API", function() {
 
 });
 
-// describe("/lib.Utils.prototype - Proxy Snippet", function() {
-//     it("Should have a 'proxyMiddleware' function that proxies requests",function() {
-//
-//     });
-// });
+describe("/lib.Utils.prototype - Proxy Snippet", function() {
+    beforeEach(function(){
+        oUtils = require(process.cwd()+ '/lib/Utils');
+    });
+    it("Should have a 'proxyMiddleware' function that proxies requests made by the grunt-contrib-connect task",function() {
+        chai.expect(typeof oUtils.proxyMiddleware).to.equal('function');
+    });
+    describe("/lib.Utils.prototype - HTTP Proxy through HTTP Proxy (Corporate Proxy)", function() {
+        beforeEach(function(){
+            oUtils._mProxies = {}; //Reset Proxy configuration
+            //Add mock proxy over proxy configuration
+            oUtils.addConfig({
+                context : '/testApi',
+                host : 'myServer.com',
+                corpProxy : {
+                    host : 'proxy',
+                    port : '8080'
+                },
+            })
+        });
+        it("Should have a 'proxyMiddleware' function that proxies requests made by the grunt-contrib-connect task",function() {
+            chai.expect(typeof oUtils.proxyMiddleware).to.equal('function');
+        });
+
+    });
+});
