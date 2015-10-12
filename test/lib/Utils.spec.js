@@ -267,8 +267,8 @@ describe("/lib.Utils.prototype - Proxy Snippet", function() {
     beforeEach(function(){
         oUtils = require(process.cwd()+ '/lib/Utils');
     });
-    it("Should have a 'proxyMiddleware' function that proxies requests made by the grunt-contrib-connect task",function() {
-        chai.expect(typeof oUtils.proxyMiddleware).to.equal('function');
+    it("Should have a 'getProxyMiddleware()' function that proxies requests made by the grunt-contrib-connect task",function() {
+        chai.expect(typeof oUtils.getProxyMiddleware()).to.equal('function');
     });
     describe("/lib.Utils.prototype - Proxy Logic", function() {
         var oMockGETReq = {
@@ -336,7 +336,7 @@ describe("/lib.Utils.prototype - Proxy Snippet", function() {
 
                 it("Should 'CONNECT' to the given Proxy Server in order to get the Connection Socket and use it for the actual proxied call",function() {
 
-                    oUtils.proxyMiddleware(oMockGETReq,oMockRes,oMockNext);
+                    oUtils.getProxyMiddleware()(oMockGETReq,oMockRes,oMockNext);
                     //Simulate Connection
                     oMockHTTP['connect']({},oMockSocket,{});
                     //Simulate Response
@@ -377,7 +377,7 @@ describe("/lib.Utils.prototype - Proxy Snippet", function() {
 
                 it("Should 'CONNECT' to the given Proxy Server in order to get the Connection Socket and use it for the actual proxied call",function() {
 
-                    oUtils.proxyMiddleware(oMockGETReq,oMockRes,oMockNext);
+                    oUtils.getProxyMiddleware()(oMockGETReq,oMockRes,oMockNext);
                     //Simulate Connection
                     oMockHTTPS['connect']({},oMockSocket,{});
                     //Simulate Response
@@ -420,7 +420,7 @@ describe("/lib.Utils.prototype - Proxy Snippet", function() {
 
                 it("Should 'CONNECT' to the given Proxy Server in order to get the Connection Socket and use it for the actual proxied call",function() {
 
-                    oUtils.proxyMiddleware(oMockGETReq,oMockRes,oMockNext);
+                    oUtils.getProxyMiddleware()(oMockGETReq,oMockRes,oMockNext);
 
                     //Simulate Connection
                     oMockHTTPS['connect']({},oMockSocket,{});
@@ -462,7 +462,7 @@ describe("/lib.Utils.prototype - Proxy Snippet", function() {
 
                 it("Should 'CONNECT' to the given Proxy Server in order to get the Connection Socket and use it for the actual proxied call",function() {
 
-                    oUtils.proxyMiddleware(oMockGETReq,oMockRes,oMockNext);
+                    oUtils.getProxyMiddleware()(oMockGETReq,oMockRes,oMockNext);
 
                     //Simulate Connection
                     oMockHTTP['connect']({},oMockSocket,{});
@@ -502,7 +502,7 @@ describe("/lib.Utils.prototype - Proxy Snippet", function() {
 
                 it("Should proxy the request as defined on the configuration",function() {
 
-                    oUtils.proxyMiddleware(oMockGETReq,oMockRes,oMockNext);
+                    oUtils.getProxyMiddleware()(oMockGETReq,oMockRes,oMockNext);
                     //Simulate Response
                     oMockHTTP['respond'](oMockResponse);
 
@@ -529,7 +529,7 @@ describe("/lib.Utils.prototype - Proxy Snippet", function() {
 
                 it("Should proxy the request as defined on the configuration",function() {
 
-                    oUtils.proxyMiddleware(oMockGETReq,oMockRes,oMockNext);
+                    oUtils.getProxyMiddleware()(oMockGETReq,oMockRes,oMockNext);
                     //Simulate Response
                     oMockHTTPS['respond'](oMockResponse);
 
@@ -555,7 +555,7 @@ describe("/lib.Utils.prototype - Proxy Snippet", function() {
 
                 it("Should proxy the request as defined on the configuration",function() {
 
-                    oUtils.proxyMiddleware(oMockPOSTReq,oMockRes,oMockNext);
+                    oUtils.getProxyMiddleware()(oMockPOSTReq,oMockRes,oMockNext);
                     //Simulate Response
                     oMockHTTP['respond'](oMockResponse);
 
@@ -583,7 +583,7 @@ describe("/lib.Utils.prototype - Proxy Snippet", function() {
 
                 it("Should proxy the request as defined on the configuration",function() {
 
-                    oUtils.proxyMiddleware(oMockPOSTReq,oMockRes,oMockNext);
+                    oUtils.getProxyMiddleware()(oMockPOSTReq,oMockRes,oMockNext);
                     //Simulate Response
                     oMockHTTPS['respond'](oMockResponse);
 
@@ -599,6 +599,16 @@ describe("/lib.Utils.prototype - Proxy Snippet", function() {
                     chai.expect(oMockResponse.pipe).to.have.been.called.with(oMockRes);
                     chai.expect(oMockHTTPS.end).to.have.been.called.exactly(1);
                 });
+            });
+        });
+        describe("/lib.Utils.prototype - Ignore Proxy", function() {
+            it("Should only proxy contexts that are configured - skip the others",function() {
+
+                oUtils.getProxyMiddleware()(oMockGETReq,oMockRes,oMockNext);
+
+                chai.expect(oMockNext).to.have.been.called.exactly(1);
+                chai.expect(oMockResponse.pipe).to.not.have.been.called.once;
+                chai.expect(oMockHTTP.end).to.not.have.been.called.once;
             });
         });
     });
