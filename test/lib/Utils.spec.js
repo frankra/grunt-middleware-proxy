@@ -23,12 +23,12 @@ describe("/lib.Utils.prototype - Inspection", function() {
         it("Protocol[HTTP] should be equal to node native HTTP module",function() {
     		var _oUtils = require(process.cwd()+ '/lib/Utils');
 
-            chai.expect(_oUtils._mProtocol['HTTP']).to.equal(require('http'));
+            chai.expect(_oUtils._mProtocol['http']).to.equal(require('http'));
     	});
         it("Protocol[HTTPS] should be equal to node native HTTP module",function() {
     		var _oUtils = require(process.cwd()+ '/lib/Utils');
 
-            chai.expect(_oUtils._mProtocol['HTTPS']).to.equal(require('https'));
+            chai.expect(_oUtils._mProtocol['https']).to.equal(require('https'));
     	});
     });
 });
@@ -133,66 +133,66 @@ describe("/lib.Utils.prototype - API", function() {
                 }).to.throw('Error defining Proxy. Mandatory property "host" should not start with a slash "/": ' + JSON.stringify(oProxyMapping,2));
             });
 
-            describe("#Validation of mandatory fields of 'corpProxy' configuration", function() {
+            describe("#Validation of mandatory fields of 'proxyTunnel' configuration", function() {
                 it("Should throw an error if the 'host' property is missing",function() {
                     var oProxyMapping = {
                         context : '/api',
                         host: 'www.google.com',
-                        corpProxy : {
+                        proxyTunnel : {
                             //missing host
                         }
                     };
                     chai.expect(function(){
                         oUtils.addConfig(oProxyMapping)
-                    }).to.throw('Error defining Proxy. Missing mandatory property "host" on: ' + JSON.stringify(oProxyMapping.corpProxy,2));
+                    }).to.throw('Error defining Proxy. Missing mandatory property "host" on: ' + JSON.stringify(oProxyMapping.proxyTunnel,2));
                 });
                 it("Should throw an error if the 'host' property is an empty string",function() {
                     var oProxyMapping = {
                         context : '/api',
                         host: 'www.google.com',
-                        corpProxy : {
+                        proxyTunnel : {
                             host : ''
                         }
                     };
                     chai.expect(function(){
                         oUtils.addConfig(oProxyMapping)
-                    }).to.throw('Error defining Proxy. Mandatory property "host" is defined as an empty string on: ' + JSON.stringify(oProxyMapping.corpProxy,2));
+                    }).to.throw('Error defining Proxy. Mandatory property "host" is defined as an empty string on: ' + JSON.stringify(oProxyMapping.proxyTunnel,2));
                 });
                 it("Should throw an error if the 'host' property is an unsupported type",function() {
                     var oProxyMapping = {
                         context : '/api',
                         host: 'www.google.com',
-                        corpProxy : {
+                        proxyTunnel : {
                             host : 111111
                         }
                     };
                     chai.expect(function(){
                         oUtils.addConfig(oProxyMapping)
-                    }).to.throw('Error defining Proxy. Mandatory property "host" is defined with unsupported type number. Expects string on: ' + JSON.stringify(oProxyMapping.corpProxy,2));
+                    }).to.throw('Error defining Proxy. Mandatory property "host" is defined with unsupported type number. Expects string on: ' + JSON.stringify(oProxyMapping.proxyTunnel,2));
                 });
                 it("Should throw an error if the 'host' property ends with a slash '/'",function() {
                     var oProxyMapping = {
                         context : '/api',
                         host: 'www.google.com',
-                        corpProxy : {
+                        proxyTunnel : {
                             host : 'proxy/'
                         }
                     };
                     chai.expect(function(){
                         oUtils.addConfig(oProxyMapping)
-                    }).to.throw('Error defining Proxy. Mandatory property "host" should not end with a slash "/": ' + JSON.stringify(oProxyMapping.corpProxy,2));
+                    }).to.throw('Error defining Proxy. Mandatory property "host" should not end with a slash "/": ' + JSON.stringify(oProxyMapping.proxyTunnel,2));
                 });
                 it("Should throw an error if the 'host' property starts with a slash '/'",function() {
                     var oProxyMapping = {
                         context : '/api',
                         host: 'www.google.com',
-                        corpProxy : {
+                        proxyTunnel : {
                             host : '/proxy'
                         }
                     };
                     chai.expect(function(){
                         oUtils.addConfig(oProxyMapping)
-                    }).to.throw('Error defining Proxy. Mandatory property "host" should not start with a slash "/": ' + JSON.stringify(oProxyMapping.corpProxy,2));
+                    }).to.throw('Error defining Proxy. Mandatory property "host" should not start with a slash "/": ' + JSON.stringify(oProxyMapping.proxyTunnel,2));
                 });
             });
         });
@@ -318,8 +318,8 @@ describe("/lib.Utils.prototype - Proxy Snippet", function() {
 
             oUtils._mProxies = {}; //Reset Proxy configuration
             //Add mock proxy over proxy configuration
-            oUtils._mProtocol['HTTP'] = oMockHTTP;
-            oUtils._mProtocol['HTTPS'] = oMockHTTPS;
+            oUtils._mProtocol['http'] = oMockHTTP;
+            oUtils._mProtocol['https'] = oMockHTTPS;
         });
         describe("#Tunnel through Corporate Proxy ('CONNECT')", function() {
             describe("#Tunnel HTTP request over HTTP CorpProxy", function() {
@@ -327,7 +327,7 @@ describe("/lib.Utils.prototype - Proxy Snippet", function() {
                     oUtils.addConfig({
                         context : '/testApi',
                         host : 'myServer.com',
-                        corpProxy : {
+                        proxyTunnel : {
                             host : 'proxy',
                             port : 8080
                         }
@@ -342,13 +342,13 @@ describe("/lib.Utils.prototype - Proxy Snippet", function() {
                     //Simulate Response
                     oMockHTTP['respond'](oMockResponse);
 
-                    chai.expect(JSON.stringify(oUtils._mProtocol['HTTP'].request.__spy.calls[0][0])).to.equal(JSON.stringify({
+                    chai.expect(JSON.stringify(oUtils._mProtocol['http'].request.__spy.calls[0][0])).to.equal(JSON.stringify({
                         host : 'proxy',
                         port : 8080,
                         method : 'CONNECT',
                         path : 'myServer.com:80'
                     }));
-                    chai.expect(JSON.stringify(oUtils._mProtocol['HTTP'].request.__spy.calls[1][0])).to.equal(JSON.stringify({
+                    chai.expect(JSON.stringify(oUtils._mProtocol['http'].request.__spy.calls[1][0])).to.equal(JSON.stringify({
                         host : 'myServer.com',
                         port : 80,
                         socket: oMockSocket,
@@ -366,7 +366,7 @@ describe("/lib.Utils.prototype - Proxy Snippet", function() {
                     oUtils.addConfig({
                         context : '/testApi',
                         host : 'myServer.com',
-                        corpProxy : {
+                        proxyTunnel : {
                             host : 'proxy',
                             port : 8080,
                             https : true
@@ -382,13 +382,13 @@ describe("/lib.Utils.prototype - Proxy Snippet", function() {
                     //Simulate Response
                     oMockHTTP['respond'](oMockResponse);
 
-                    chai.expect(JSON.stringify(oUtils._mProtocol['HTTPS'].request.__spy.calls[0][0])).to.equal(JSON.stringify({
+                    chai.expect(JSON.stringify(oUtils._mProtocol['https'].request.__spy.calls[0][0])).to.equal(JSON.stringify({
                         host : 'proxy',
                         port : 8080,
                         method : 'CONNECT',
                         path : 'myServer.com:80'
                     }));
-                    chai.expect(JSON.stringify(oUtils._mProtocol['HTTP'].request.__spy.calls[0][0])).to.equal(JSON.stringify({
+                    chai.expect(JSON.stringify(oUtils._mProtocol['http'].request.__spy.calls[0][0])).to.equal(JSON.stringify({
                         host : 'myServer.com',
                         port : 80,
                         socket: oMockSocket,
@@ -408,7 +408,7 @@ describe("/lib.Utils.prototype - Proxy Snippet", function() {
                         context : '/testApi',
                         host : 'myServer.com',
                         https : true,
-                        corpProxy : {
+                        proxyTunnel : {
                             host : 'proxy',
                             port : 8080,
                             https : true
@@ -425,13 +425,13 @@ describe("/lib.Utils.prototype - Proxy Snippet", function() {
                     //Simulate Response
                     oMockHTTPS['respond'](oMockResponse);
 
-                    chai.expect(JSON.stringify(oUtils._mProtocol['HTTPS'].request.__spy.calls[0][0])).to.equal(JSON.stringify({
+                    chai.expect(JSON.stringify(oUtils._mProtocol['https'].request.__spy.calls[0][0])).to.equal(JSON.stringify({
                         host : 'proxy',
                         port : 8080,
                         method : 'CONNECT',
                         path : 'myServer.com:443'
                     }));
-                    chai.expect(JSON.stringify(oUtils._mProtocol['HTTPS'].request.__spy.calls[1][0])).to.equal(JSON.stringify({
+                    chai.expect(JSON.stringify(oUtils._mProtocol['https'].request.__spy.calls[1][0])).to.equal(JSON.stringify({
                         host : 'myServer.com',
                         port : 443,
                         socket: oMockSocket,
@@ -450,7 +450,7 @@ describe("/lib.Utils.prototype - Proxy Snippet", function() {
                         context : '/testApi',
                         host : 'myServer.com',
                         https : true,
-                        corpProxy : {
+                        proxyTunnel : {
                             host : 'proxy',
                             port : 8080
                         }
@@ -466,13 +466,13 @@ describe("/lib.Utils.prototype - Proxy Snippet", function() {
                     //Simulate Response
                     oMockHTTPS['respond'](oMockResponse);
 
-                    chai.expect(JSON.stringify(oUtils._mProtocol['HTTP'].request.__spy.calls[0][0])).to.equal(JSON.stringify({
+                    chai.expect(JSON.stringify(oUtils._mProtocol['http'].request.__spy.calls[0][0])).to.equal(JSON.stringify({
                         host : 'proxy',
                         port : 8080,
                         method : 'CONNECT',
                         path : 'myServer.com:443'
                     }));
-                    chai.expect(JSON.stringify(oUtils._mProtocol['HTTPS'].request.__spy.calls[0][0])).to.equal(JSON.stringify({
+                    chai.expect(JSON.stringify(oUtils._mProtocol['https'].request.__spy.calls[0][0])).to.equal(JSON.stringify({
                         host : 'myServer.com',
                         port : 443,
                         socket: oMockSocket,
@@ -486,6 +486,129 @@ describe("/lib.Utils.prototype - Proxy Snippet", function() {
                     chai.expect(oMockHTTP.end).to.have.been.called.exactly(1);
                 });
             });
+        });
+        describe("#Simple Proxy over Proxy", function() {
+            describe("#GET Proxy HTTPS 'GET' request over HTTPS Proxy", function() {
+                beforeEach(function(){
+                    oUtils.addConfig({
+                        context : '/testApi',
+                        host : 'myServer.com',
+                        https : true,
+                        proxy : {
+                            host : 'proxy',
+                            port : 44300,
+                            https : true
+                        }
+                    });
+                });
+
+                it("Should resolve the actual path and send it to the proxy server configured",function() {
+                    oUtils.getProxyMiddleware()(oMockGETReq,oMockRes,oMockNext);
+                    //Simulate Response
+                    oMockHTTPS['respond'](oMockResponse);
+
+                    chai.expect(JSON.stringify(oUtils._mProtocol['https'].request.__spy.calls[0][0])).to.equal(JSON.stringify({
+                        host : 'proxy',
+                        port : 44300,
+                        method : 'GET',
+                        path : 'https://myServer.com:443/testApi/testing.js'
+                    }));
+
+                    chai.expect(oMockNext).to.have.been.called.exactly(1);
+                    chai.expect(oMockResponse.pipe).to.have.been.called.with(oMockRes);
+                    chai.expect(oMockHTTPS.end).to.have.been.called.exactly(1);
+                });
+            });
+            describe("#GET Proxy HTTP 'GET' request over HTTPS Proxy", function() {
+                beforeEach(function(){
+                    oUtils.addConfig({
+                        context : '/testApi',
+                        host : 'myServer.com',
+                        proxy : {
+                            host : 'proxy',
+                            port : 44300,
+                            https : true
+                        }
+                    });
+                });
+
+                it("Should resolve the actual path and send it to the proxy server configured",function() {
+                    oUtils.getProxyMiddleware()(oMockGETReq,oMockRes,oMockNext);
+                    //Simulate Response
+                    oMockHTTPS['respond'](oMockResponse);
+
+                    chai.expect(JSON.stringify(oUtils._mProtocol['https'].request.__spy.calls[0][0])).to.equal(JSON.stringify({
+                        host : 'proxy',
+                        port : 44300,
+                        method : 'GET',
+                        path : 'http://myServer.com:80/testApi/testing.js'
+                    }));
+
+                    chai.expect(oMockNext).to.have.been.called.exactly(1);
+                    chai.expect(oMockResponse.pipe).to.have.been.called.with(oMockRes);
+                    chai.expect(oMockHTTPS.end).to.have.been.called.exactly(1);
+                });
+            });
+            describe("#GET Proxy HTTPS 'GET' request over HTTP Proxy", function() {
+                beforeEach(function(){
+                    oUtils.addConfig({
+                        context : '/testApi',
+                        host : 'myServer.com',
+                        https : true,
+                        proxy : {
+                            host : 'proxy',
+                            port : 44300,
+                        }
+                    });
+                });
+
+                it("Should resolve the actual path and send it to the proxy server configured",function() {
+                    oUtils.getProxyMiddleware()(oMockGETReq,oMockRes,oMockNext);
+                    //Simulate Response
+                    oMockHTTP['respond'](oMockResponse);
+
+                    chai.expect(JSON.stringify(oUtils._mProtocol['http'].request.__spy.calls[0][0])).to.equal(JSON.stringify({
+                        host : 'proxy',
+                        port : 44300,
+                        method : 'GET',
+                        path : 'https://myServer.com:443/testApi/testing.js'
+                    }));
+
+                    chai.expect(oMockNext).to.have.been.called.exactly(1);
+                    chai.expect(oMockResponse.pipe).to.have.been.called.with(oMockRes);
+                    chai.expect(oMockHTTP.end).to.have.been.called.exactly(1);
+                });
+            });
+            describe("#GET Proxy HTTP 'GET' request over HTTP Proxy", function() {
+                beforeEach(function(){
+                    oUtils.addConfig({
+                        context : '/testApi',
+                        host : 'myServer.com',
+                        proxy : {
+                            host : 'proxy',
+                            port : 44300,
+                        }
+                    });
+                });
+
+                it("Should resolve the actual path and send it to the proxy server configured",function() {
+                    oUtils.getProxyMiddleware()(oMockGETReq,oMockRes,oMockNext);
+                    //Simulate Response
+                    oMockHTTP['respond'](oMockResponse);
+
+                    chai.expect(JSON.stringify(oUtils._mProtocol['http'].request.__spy.calls[0][0])).to.equal(JSON.stringify({
+                        host : 'proxy',
+                        port : 44300,
+                        method : 'GET',
+                        path : 'http://myServer.com:80/testApi/testing.js'
+                    }));
+
+                    chai.expect(oMockNext).to.have.been.called.exactly(1);
+                    chai.expect(oMockResponse.pipe).to.have.been.called.with(oMockRes);
+                    chai.expect(oMockHTTP.end).to.have.been.called.exactly(1);
+                });
+            });
+           
         });
         describe("#Simple Proxy", function() {
             describe("#GET Proxy HTTP 'GET' request", function() {
@@ -502,7 +625,7 @@ describe("/lib.Utils.prototype - Proxy Snippet", function() {
                     //Simulate Response
                     oMockHTTP['respond'](oMockResponse);
 
-                    chai.expect(JSON.stringify(oUtils._mProtocol['HTTP'].request.__spy.calls[0][0])).to.equal(JSON.stringify({
+                    chai.expect(JSON.stringify(oUtils._mProtocol['http'].request.__spy.calls[0][0])).to.equal(JSON.stringify({
                         host : 'myServer.com',
                         port : 80,
                         method : 'GET',
@@ -529,7 +652,7 @@ describe("/lib.Utils.prototype - Proxy Snippet", function() {
                     //Simulate Response
                     oMockHTTPS['respond'](oMockResponse);
 
-                    chai.expect(JSON.stringify(oUtils._mProtocol['HTTPS'].request.__spy.calls[0][0])).to.equal(JSON.stringify({
+                    chai.expect(JSON.stringify(oUtils._mProtocol['https'].request.__spy.calls[0][0])).to.equal(JSON.stringify({
                         host : 'myServer.com',
                         port : 443,
                         method : 'GET',
@@ -555,7 +678,7 @@ describe("/lib.Utils.prototype - Proxy Snippet", function() {
                     //Simulate Response
                     oMockHTTP['respond'](oMockResponse);
 
-                    chai.expect(JSON.stringify(oUtils._mProtocol['HTTP'].request.__spy.calls[0][0])).to.equal(JSON.stringify({
+                    chai.expect(JSON.stringify(oUtils._mProtocol['http'].request.__spy.calls[0][0])).to.equal(JSON.stringify({
                         host : 'myServer.com',
                         port : 80,
                         method : 'POST',
@@ -583,7 +706,7 @@ describe("/lib.Utils.prototype - Proxy Snippet", function() {
                     //Simulate Response
                     oMockHTTPS['respond'](oMockResponse);
 
-                    chai.expect(JSON.stringify(oUtils._mProtocol['HTTPS'].request.__spy.calls[0][0])).to.equal(JSON.stringify({
+                    chai.expect(JSON.stringify(oUtils._mProtocol['https'].request.__spy.calls[0][0])).to.equal(JSON.stringify({
                         host : 'myServer.com',
                         port : 443,
                         method : 'POST',
@@ -624,7 +747,7 @@ describe("/lib.Utils.prototype - Proxy Snippet", function() {
                     //Simulate Response
                     oMockHTTP['respond'](oMockResponse);
 
-                    chai.expect(JSON.stringify(oUtils._mProtocol['HTTP'].request.__spy.calls[0][0])).to.equal(JSON.stringify({
+                    chai.expect(JSON.stringify(oUtils._mProtocol['http'].request.__spy.calls[0][0])).to.equal(JSON.stringify({
                         host : 'myServer.com',
                         port : 80,
                         method : 'GET',
@@ -647,7 +770,7 @@ describe("/lib.Utils.prototype - Proxy Snippet", function() {
                         headers : {
                             'dummy' : 'header'
                         },
-                        corpProxy : {
+                        proxyTunnel : {
                             host : 'proxy',
                             port : 8080,
                             headers : {
@@ -666,7 +789,7 @@ describe("/lib.Utils.prototype - Proxy Snippet", function() {
                     //Simulate Response
                     oMockHTTP['respond'](oMockResponse);
 
-                    chai.expect(JSON.stringify(oUtils._mProtocol['HTTP'].request.__spy.calls[0][0])).to.equal(JSON.stringify({
+                    chai.expect(JSON.stringify(oUtils._mProtocol['http'].request.__spy.calls[0][0])).to.equal(JSON.stringify({
                         host : 'proxy',
                         port : 8080,
                         method : 'CONNECT',
@@ -675,7 +798,7 @@ describe("/lib.Utils.prototype - Proxy Snippet", function() {
                             'dummy_proxy' : 'header'
                         }
                     }));
-                    chai.expect(JSON.stringify(oUtils._mProtocol['HTTP'].request.__spy.calls[1][0])).to.equal(JSON.stringify({
+                    chai.expect(JSON.stringify(oUtils._mProtocol['http'].request.__spy.calls[1][0])).to.equal(JSON.stringify({
                         host : 'myServer.com',
                         port : 80,
                         socket: oMockSocket,
