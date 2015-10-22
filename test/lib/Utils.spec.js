@@ -351,7 +351,6 @@ describe("/lib.Utils.prototype - Proxy Snippet", function() {
                     chai.expect(JSON.stringify(oUtils._mProtocol['HTTP'].request.__spy.calls[1][0])).to.equal(JSON.stringify({
                         host : 'myServer.com',
                         port : 80,
-                        agent: false,
                         socket: oMockSocket,
                         method : 'GET',
                         path : '/testApi/testing.js'
@@ -392,7 +391,6 @@ describe("/lib.Utils.prototype - Proxy Snippet", function() {
                     chai.expect(JSON.stringify(oUtils._mProtocol['HTTP'].request.__spy.calls[0][0])).to.equal(JSON.stringify({
                         host : 'myServer.com',
                         port : 80,
-                        agent: false,
                         socket: oMockSocket,
                         method : 'GET',
                         path : '/testApi/testing.js'
@@ -436,7 +434,6 @@ describe("/lib.Utils.prototype - Proxy Snippet", function() {
                     chai.expect(JSON.stringify(oUtils._mProtocol['HTTPS'].request.__spy.calls[1][0])).to.equal(JSON.stringify({
                         host : 'myServer.com',
                         port : 443,
-                        agent: false,
                         socket: oMockSocket,
                         method : 'GET',
                         path : '/testApi/testing.js'
@@ -478,7 +475,6 @@ describe("/lib.Utils.prototype - Proxy Snippet", function() {
                     chai.expect(JSON.stringify(oUtils._mProtocol['HTTPS'].request.__spy.calls[0][0])).to.equal(JSON.stringify({
                         host : 'myServer.com',
                         port : 443,
-                        agent: false,
                         socket: oMockSocket,
                         method : 'GET',
                         path : '/testApi/testing.js'
@@ -643,7 +639,7 @@ describe("/lib.Utils.prototype - Proxy Snippet", function() {
                     chai.expect(oMockHTTP.end).to.have.been.called.exactly(1);
                 });
             });
-            describe("#Proxy over through Tunnel Configuration forwarding", function() {
+            describe("#Proxy through Tunnel Configuration forwarding", function() {
                 beforeEach(function(){
                     oUtils.addConfig({
                         context : '/testApi',
@@ -682,7 +678,6 @@ describe("/lib.Utils.prototype - Proxy Snippet", function() {
                     chai.expect(JSON.stringify(oUtils._mProtocol['HTTP'].request.__spy.calls[1][0])).to.equal(JSON.stringify({
                         host : 'myServer.com',
                         port : 80,
-                        agent: false,
                         socket: oMockSocket,
                         method : 'GET',
                         path : '/testApi/testing.js',
