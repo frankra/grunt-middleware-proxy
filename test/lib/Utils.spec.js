@@ -14,7 +14,7 @@ describe("/lib.Utils.prototype - Inspection", function() {
 
         chai.expect(_oUtils).to.equal(_oAnotherUtils);
 	});
-    describe("/lib.Utils.prototype - Internal Dependencies", function() {
+    describe("#Internal Dependencies", function() {
         it("Should have a map for the supported protocols",function() {
     		var _oUtils = require(process.cwd()+ '/lib/Utils');
 
@@ -270,7 +270,7 @@ describe("/lib.Utils.prototype - Proxy Snippet", function() {
     it("Should have a 'getProxyMiddleware()' function that proxies requests made by the grunt-contrib-connect task",function() {
         chai.expect(typeof oUtils.getProxyMiddleware()).to.equal('function');
     });
-    describe("/lib.Utils.prototype - Proxy Logic", function() {
+    describe("#Proxy Logic", function() {
         var oMockGETReq = {
             url : '/testApi/testing.js',
             method: 'GET'
@@ -321,8 +321,8 @@ describe("/lib.Utils.prototype - Proxy Snippet", function() {
             oUtils._mProtocol['HTTP'] = oMockHTTP;
             oUtils._mProtocol['HTTPS'] = oMockHTTPS;
         });
-        describe("/lib.Utils.prototype - Proxy through Corporate Proxy", function() {
-            describe("/lib.Utils.prototype - Proxy HTTP request over HTTP CorpProxy", function() {
+        describe("#Tunnel through Corporate Proxy ('CONNECT')", function() {
+            describe("#Tunnel HTTP request over HTTP CorpProxy", function() {
                 beforeEach(function(){
                     oUtils.addConfig({
                         context : '/testApi',
@@ -362,7 +362,7 @@ describe("/lib.Utils.prototype - Proxy Snippet", function() {
                     chai.expect(oMockHTTP.end).to.have.been.called.exactly(2);
                 });
             });
-            describe("/lib.Utils.prototype - Proxy HTTP request over HTTPS CorpProxy", function() {
+            describe("#Tunnel HTTP request over HTTPS CorpProxy", function() {
                 beforeEach(function(){
                     oUtils.addConfig({
                         context : '/testApi',
@@ -404,7 +404,7 @@ describe("/lib.Utils.prototype - Proxy Snippet", function() {
                     chai.expect(oMockHTTPS.end).to.have.been.called.exactly(1);
                 });
             });
-            describe("/lib.Utils.prototype - Proxy HTTPS request over HTTPS CorpProxy", function() {
+            describe("#Tunnel HTTPS request over HTTPS CorpProxy", function() {
                 beforeEach(function(){
                     oUtils.addConfig({
                         context : '/testApi',
@@ -447,7 +447,7 @@ describe("/lib.Utils.prototype - Proxy Snippet", function() {
                     chai.expect(oMockHTTPS.end).to.have.been.called.exactly(2);
                 });
             });
-            describe("/lib.Utils.prototype - Proxy HTTPS request over HTTP CorpProxy", function() {
+            describe("#Tunnel HTTPS request over HTTP CorpProxy", function() {
                 beforeEach(function(){
                     oUtils.addConfig({
                         context : '/testApi',
@@ -491,8 +491,8 @@ describe("/lib.Utils.prototype - Proxy Snippet", function() {
                 });
             });
         });
-        describe("/lib.Utils.prototype - Simple Proxy", function() {
-            describe("/lib.Utils.prototype - GET Proxy HTTP 'GET' request", function() {
+        describe("#Simple Proxy", function() {
+            describe("#GET Proxy HTTP 'GET' request", function() {
                 beforeEach(function(){
                     oUtils.addConfig({
                         context : '/testApi',
@@ -518,7 +518,7 @@ describe("/lib.Utils.prototype - Proxy Snippet", function() {
                     chai.expect(oMockHTTP.end).to.have.been.called.exactly(1);
                 });
             });
-            describe("/lib.Utils.prototype - Proxy HTTPS 'GET' request", function() {
+            describe("#Proxy HTTPS 'GET' request", function() {
                 beforeEach(function(){
                     oUtils.addConfig({
                         context : '/testApi',
@@ -545,7 +545,7 @@ describe("/lib.Utils.prototype - Proxy Snippet", function() {
                     chai.expect(oMockHTTPS.end).to.have.been.called.exactly(1);
                 });
             });
-            describe("/lib.Utils.prototype - GET Proxy HTTP 'POST' request", function() {
+            describe("#GET Proxy HTTP 'POST' request", function() {
                 beforeEach(function(){
                     oUtils.addConfig({
                         context : '/testApi',
@@ -572,7 +572,7 @@ describe("/lib.Utils.prototype - Proxy Snippet", function() {
                     chai.expect(oMockHTTP.end).to.have.been.called.exactly(1);
                 });
             });
-            describe("/lib.Utils.prototype - Proxy HTTPS 'POST' request", function() {
+            describe("#Proxy HTTPS 'POST' request", function() {
                 beforeEach(function(){
                     oUtils.addConfig({
                         context : '/testApi',
@@ -601,7 +601,7 @@ describe("/lib.Utils.prototype - Proxy Snippet", function() {
                 });
             });
         });
-        describe("/lib.Utils.prototype - Ignore Proxy", function() {
+        describe("#Ignore Proxy", function() {
             it("Should only proxy contexts that are configured - skip the others",function() {
 
                 oUtils.getProxyMiddleware()(oMockGETReq,oMockRes,oMockNext);
@@ -609,6 +609,89 @@ describe("/lib.Utils.prototype - Proxy Snippet", function() {
                 chai.expect(oMockNext).to.have.been.called.exactly(1);
                 chai.expect(oMockResponse.pipe).to.not.have.been.called.once;
                 chai.expect(oMockHTTP.end).to.not.have.been.called.once;
+            });
+        });
+        describe("#Proxy Configuration forwarding", function() {
+            describe("#Simple Proxy Configuration forwarding", function() {
+                beforeEach(function(){
+                    oUtils.addConfig({
+                        context : '/testApi',
+                        host : 'myServer.com',
+                        headers : {
+                            'dummy' : 'header'
+                        }
+                    });
+                });
+
+                it("Should forward the given headers",function() {
+                    oUtils.getProxyMiddleware()(oMockGETReq,oMockRes,oMockNext);
+                    //Simulate Response
+                    oMockHTTP['respond'](oMockResponse);
+
+                    chai.expect(JSON.stringify(oUtils._mProtocol['HTTP'].request.__spy.calls[0][0])).to.equal(JSON.stringify({
+                        host : 'myServer.com',
+                        port : 80,
+                        method : 'GET',
+                        path : '/testApi/testing.js',
+                        headers : {
+                            'dummy' : 'header'
+                        }
+                    }));
+
+                    chai.expect(oMockNext).to.have.been.called.exactly(1);
+                    chai.expect(oMockResponse.pipe).to.have.been.called.with(oMockRes);
+                    chai.expect(oMockHTTP.end).to.have.been.called.exactly(1);
+                });
+            });
+            describe("#Simple Proxy over Proxy Configuration forwarding", function() {
+                beforeEach(function(){
+                    oUtils.addConfig({
+                        context : '/testApi',
+                        host : 'myServer.com',
+                        headers : {
+                            'dummy' : 'header'
+                        },
+                        corpProxy : {
+                            host : 'proxy',
+                            port : 8080,
+                            headers : {
+                                'dummy_proxy' : 'header'
+                            },
+                        }
+                    });
+                });
+
+                it("Should forward the given headers",function() {
+                   
+                    oUtils.getProxyMiddleware()(oMockGETReq,oMockRes,oMockNext);
+
+                    //Simulate Connection
+                    oMockHTTP['connect']({},oMockSocket,{});
+                    //Simulate Response
+                    oMockHTTP['respond'](oMockResponse);
+
+                    chai.expect(JSON.stringify(oUtils._mProtocol['HTTP'].request.__spy.calls[0][0])).to.equal(JSON.stringify({
+                        host : 'proxy',
+                        port : 8080,
+                        method : 'CONNECT',
+                        path : 'myServer.com:80',
+                        headers : {
+                            'dummy_proxy' : 'header'
+                        },
+                    }));
+                    chai.expect(JSON.stringify(oUtils._mProtocol['HTTP'].request.__spy.calls[1][0])).to.equal(JSON.stringify({
+                        host : 'myServer.com',
+                        port : 80,
+                        agent: false,
+                        socket: oMockSocket,
+                        method : 'GET',
+                        path : '/testApi/testing.js',
+                        headers : {
+                            'dummy' : 'header'
+                        },
+                    }));
+
+                });
             });
         });
     });
