@@ -677,7 +677,7 @@ describe("/lib.Utils.prototype - Proxy Snippet", function() {
                         path : 'myServer.com:80',
                         headers : {
                             'dummy_proxy' : 'header'
-                        },
+                        }
                     }));
                     chai.expect(JSON.stringify(oUtils._mProtocol['HTTP'].request.__spy.calls[1][0])).to.equal(JSON.stringify({
                         host : 'myServer.com',
@@ -688,7 +688,7 @@ describe("/lib.Utils.prototype - Proxy Snippet", function() {
                         path : '/testApi/testing.js',
                         headers : {
                             'dummy' : 'header'
-                        },
+                        }
                     }));
 
                 });
