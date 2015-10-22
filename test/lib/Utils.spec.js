@@ -643,7 +643,7 @@ describe("/lib.Utils.prototype - Proxy Snippet", function() {
                     chai.expect(oMockHTTP.end).to.have.been.called.exactly(1);
                 });
             });
-            describe("#Simple Proxy over Proxy Configuration forwarding", function() {
+            describe("#Proxy over through Tunnel Configuration forwarding", function() {
                 beforeEach(function(){
                     oUtils.addConfig({
                         context : '/testApi',
