@@ -130,7 +130,7 @@ grunt.initConfig({
 ```
 
 ### Registering the Grunt Task
-```
+```js
 grunt.registerTask('serve', [
 	'setupProxies:server',
 	'connect:server',
@@ -173,7 +173,7 @@ The available configuration options from a given proxy based on the node [http](
 >Creates a new Authorization header on the request as defined by the Standard on HTTP.
 >Basically creates:
 
->```
+>```js
 >headers : {
 >    'Authorization' : 'Basic ' + btoa('username:password')
 >}
@@ -184,7 +184,7 @@ The available configuration options from a given proxy based on the node [http](
 
 >A map of headers to be added to proxied requests.
 
->```
+>```js
 >headers: {
 >    'header':'value',
 >    'anotherheader':'anothervalue'
@@ -238,7 +238,7 @@ The available configuration options from a given proxy based on the node [http](
 >Creates a new Authorization header on the request as defined by the Standard on HTTP. Will be added to the Request for tunneling.
 >Basically creates:
 
->```
+>```js
 >headers : {
 >    'Authorization' : 'Basic ' + btoa('username:password')
 >}
@@ -250,7 +250,7 @@ The available configuration options from a given proxy based on the node [http](
 >A map of headers to be added to the tunneling request (CONNECT).
 
 
->```
+>```js
 >headers: {
 >    'header':'value',
 >    'anotherheader':'anothervalue'
