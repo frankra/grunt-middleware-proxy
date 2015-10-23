@@ -195,6 +195,68 @@ describe("/lib.Utils.prototype - API", function() {
                     }).to.throw('Error defining Proxy. Mandatory property "host" should not start with a slash "/": ' + JSON.stringify(oProxyMapping.proxyTunnel,2));
                 });
             });
+            describe("#Validation of mandatory fields of 'proxy' configuration", function() {
+                it("Should throw an error if the 'host' property is missing",function() {
+                    var oProxyMapping = {
+                        context : '/api',
+                        host: 'www.google.com',
+                        proxy : {
+                            //missing host
+                        }
+                    };
+                    chai.expect(function(){
+                        oUtils.addConfig(oProxyMapping)
+                    }).to.throw('Error defining Proxy. Missing mandatory property "host" on: ' + JSON.stringify(oProxyMapping.proxy,2));
+                });
+                it("Should throw an error if the 'host' property is an empty string",function() {
+                    var oProxyMapping = {
+                        context : '/api',
+                        host: 'www.google.com',
+                        proxy : {
+                            host : ''
+                        }
+                    };
+                    chai.expect(function(){
+                        oUtils.addConfig(oProxyMapping)
+                    }).to.throw('Error defining Proxy. Mandatory property "host" is defined as an empty string on: ' + JSON.stringify(oProxyMapping.proxy,2));
+                });
+                it("Should throw an error if the 'host' property is an unsupported type",function() {
+                    var oProxyMapping = {
+                        context : '/api',
+                        host: 'www.google.com',
+                        proxy : {
+                            host : 111111
+                        }
+                    };
+                    chai.expect(function(){
+                        oUtils.addConfig(oProxyMapping)
+                    }).to.throw('Error defining Proxy. Mandatory property "host" is defined with unsupported type number. Expects string on: ' + JSON.stringify(oProxyMapping.proxy,2));
+                });
+                it("Should throw an error if the 'host' property ends with a slash '/'",function() {
+                    var oProxyMapping = {
+                        context : '/api',
+                        host: 'www.google.com',
+                        proxy : {
+                            host : 'proxy/'
+                        }
+                    };
+                    chai.expect(function(){
+                        oUtils.addConfig(oProxyMapping)
+                    }).to.throw('Error defining Proxy. Mandatory property "host" should not end with a slash "/": ' + JSON.stringify(oProxyMapping.proxy,2));
+                });
+                it("Should throw an error if the 'host' property starts with a slash '/'",function() {
+                    var oProxyMapping = {
+                        context : '/api',
+                        host: 'www.google.com',
+                        proxy : {
+                            host : '/proxy'
+                        }
+                    };
+                    chai.expect(function(){
+                        oUtils.addConfig(oProxyMapping)
+                    }).to.throw('Error defining Proxy. Mandatory property "host" should not start with a slash "/": ' + JSON.stringify(oProxyMapping.proxy,2));
+                });
+            });
         });
 
         it("Should receive a 'Proxy Configuration' object and store it internally, on a tree based structure",function() {
