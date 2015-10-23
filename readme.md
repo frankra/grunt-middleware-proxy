@@ -41,7 +41,7 @@ grunt.initConfig({
 			    }
             },
             proxies: [{
-                    context: '/yourapi', //REQUIRED! Must start with a '/' must not end with a '/'
+                    context: '/yourapi', //REQUIRED! Must start with a '/' should not end with a '/'
                     host: 'api_server_domain.com', //REQUIRED! Should not contain 'http://' or 'https://'
                     port: 8080, //Optional, defaults to 80 if http or 443 if https
                     https: false,//Optional, defaults to false
@@ -70,7 +70,7 @@ grunt.initConfig({
 			    }
             },
             proxies: [{
-                    context: '/yourapi', //REQUIRED! Must start with a '/' must not end with a '/'
+                    context: '/yourapi', //REQUIRED! Must start with a '/' should not end with a '/'
                     host: 'api_server_domain.com', //REQUIRED! Should not contain 'http://' or 'https://'
                     port: 8080, //Optional, defaults to 80 if http or 443 if https
                     https: false,//Optional, defaults to false
@@ -106,7 +106,7 @@ grunt.initConfig({
 			    }
             },
             proxies: [{
-                    context: '/yourapi', //REQUIRED! Must start with a '/' must not end with a '/'
+                    context: '/yourapi', //REQUIRED! Must start with a '/' should not end with a '/'
                     host: 'api_server_domain.com', //REQUIRED! Should not contain 'http://' or 'https://'
                     port: 8080, //Optional, defaults to 80 if http or 443 if https
                     https: false,//Optional, defaults to false
