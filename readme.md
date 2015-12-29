@@ -230,6 +230,7 @@ The available configuration options from a given proxy based on the node [http](
 >If not provided by the configuration, will be defaulted to 80 if `https:false` or 443 if `https:true`
 
 >The port to proxy to.
+
 #### options.proxyTunnel.auth
 >Type: `String`
 
