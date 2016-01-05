@@ -114,10 +114,10 @@ grunt.initConfig({
                     headers: {//Optional.
                         'header':'value'
                     },
-                    proxyTunneling: {
+                    proxyTunnel: {
                         host: 'proxy', //REQUIRED! Should not contain 'http://' or 'https://'
                         port: 8080,//Optional, defaults to 80 if http or 443 if https
-                        https: false//Optional, defaults to false
+                        https: false,//Optional, defaults to false
                         auth: 'username:password', //Optional, adds the Authorization header
                         headers: {//Optional.
                             'header':'value'
