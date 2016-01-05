@@ -241,7 +241,7 @@ The available configuration options from a given proxy based on the node [http](
 
 >```js
 >headers : {
->    'Authorization' : 'Basic ' + btoa('username:password')
+>    'Authorization' : 'Basic ' + new Buffer('username:password').toString('base64')
 >}
 ```
 
