@@ -114,10 +114,10 @@ grunt.initConfig({
                     headers: {//Optional.
                         'header':'value'
                     },
-                    proxyTunneling: {
+                    proxyTunnel: {
                         host: 'proxy', //REQUIRED! Should not contain 'http://' or 'https://'
                         port: 8080,//Optional, defaults to 80 if http or 443 if https
-                        https: false//Optional, defaults to false
+                        https: false,//Optional, defaults to false
                         auth: 'username:password', //Optional, adds the Authorization header
                         headers: {//Optional.
                             'header':'value'
@@ -230,6 +230,7 @@ The available configuration options from a given proxy based on the node [http](
 >If not provided by the configuration, will be defaulted to 80 if `https:false` or 443 if `https:true`
 
 >The port to proxy to.
+
 #### options.proxyTunnel.auth
 >Type: `String`
 
@@ -240,7 +241,7 @@ The available configuration options from a given proxy based on the node [http](
 
 >```js
 >headers : {
->    'Authorization' : 'Basic ' + btoa('username:password')
+>    'Authorization' : 'Basic ' + new Buffer('username:password').toString('base64')
 >}
 ```
 
