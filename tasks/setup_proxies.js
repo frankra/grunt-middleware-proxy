@@ -1,5 +1,5 @@
 'use strict';
-var oUtils = require('../lib/Utils');
+var oConfigManager = require('../lib/core/ConfigurationManager');
 
 module.exports = function(oGrunt) {
     oGrunt.registerTask('setupProxies', function(sConfig) {
@@ -10,6 +10,6 @@ module.exports = function(oGrunt) {
         } else {
             aProxyOptions = aProxyOptions.concat(oGrunt.config('connect.proxies') || []);
         }
-        oUtils.addConfigs(aProxyOptions);
+        oConfigManager.addConfigs(aProxyOptions);
     });
 };

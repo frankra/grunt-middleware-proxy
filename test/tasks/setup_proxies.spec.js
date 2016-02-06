@@ -1,8 +1,8 @@
 require('../bootstrap')();
 //Test Global Variables:
 var fnTask;
-var oUtils = require(process.cwd()+ '/lib/Utils');
-chai.spy.on(oUtils,'addConfigs');
+var oConfigurationManager = require(process.cwd()+ '/lib/core/ConfigurationManager');
+chai.spy.on(oConfigurationManager,'addConfigs');
 
 describe("/tasks.setup_proxies.prototype - Inspection", function() {
     it("Should be a function",function() {
@@ -46,8 +46,8 @@ describe("/tasks.setup_proxies.prototype - Processing", function() {
                 fnTasknippet(sConfig);
             })
         }
-        oUtils._mProxies = {}; //Reset proxy config
-        oUtils.addConfigs.reset();
+        oConfigurationManager._mProxies = {}; //Reset proxy config
+        oConfigurationManager.addConfigs.reset();
     });
 
     it("Should register itself as Grunt Task with alias 'setupProxies'",function() {
@@ -66,8 +66,8 @@ describe("/tasks.setup_proxies.prototype - Processing", function() {
         chai.expect(oMockGrunt.config).to.have.been.called.exactly(1);
         chai.expect(oMockGrunt.config.__spy.calls[0][0]).to.equal('connect.server');
 
-        chai.expect(oUtils.addConfigs).to.have.been.called.exactly(1);
-        chai.expect(JSON.stringify(oUtils.addConfigs.__spy.calls[0][0])).to.equal(JSON.stringify(aServerProxies));
+        chai.expect(oConfigurationManager.addConfigs).to.have.been.called.exactly(1);
+        chai.expect(JSON.stringify(oConfigurationManager.addConfigs.__spy.calls[0][0])).to.equal(JSON.stringify(aServerProxies));
 	});
 
     it("Should fetch the configuration from the default connect configuration and register as a GruntTask",function() {
@@ -77,7 +77,7 @@ describe("/tasks.setup_proxies.prototype - Processing", function() {
         chai.expect(oMockGrunt.config).to.have.been.called.exactly(1);
         chai.expect(oMockGrunt.config.__spy.calls[0][0]).to.equal('connect.proxies');
 
-        chai.expect(oUtils.addConfigs).to.have.been.called.exactly(1);
-        chai.expect(JSON.stringify(oUtils.addConfigs.__spy.calls[0][0])).to.equal(JSON.stringify(aDefaultProxies));
+        chai.expect(oConfigurationManager.addConfigs).to.have.been.called.exactly(1);
+        chai.expect(JSON.stringify(oConfigurationManager.addConfigs.__spy.calls[0][0])).to.equal(JSON.stringify(aDefaultProxies));
 	});
 });
