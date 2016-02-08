@@ -3,7 +3,8 @@
   "version": "1.0.1",
   "description": "grunt-contrib-connect middleware proxy utility",
   "scripts": {
-    "test": "mocha test/**/*spec.js test/**/**/*spec.js  -w"
+    "test": "mocha test/**/*spec.js test/**/**/*spec.js",
+    "tdd": "mocha test/**/*spec.js test/**/**/*spec.js  -w"
   },
   "repository": {
     "type": "git",
