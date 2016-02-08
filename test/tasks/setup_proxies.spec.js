@@ -1,6 +1,6 @@
 require('../bootstrap')();
 //Test Global Variables:
-var fnTask;
+var fnTask = require(process.cwd()+ '/tasks/setup_proxies');;
 var oConfigurationManager = require(process.cwd()+ '/lib/core/ConfigurationManager');
 chai.spy.on(oConfigurationManager,'addConfigs');
 
@@ -32,7 +32,6 @@ describe("/tasks.setup_proxies.prototype - Processing", function() {
         },
     ];
     beforeEach(function(){
-        fnTask = require(process.cwd()+ '/tasks/setup_proxies');
         sConfig = 'server';
         oMockGrunt = {
             config : chai.spy(function(sConfigAlias){
