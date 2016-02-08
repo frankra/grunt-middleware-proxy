@@ -56,10 +56,12 @@ describe("/lib.Utils.prototype - Proxy Snippet", function() {
         oUtils.getProxyMiddleware()(mockReq,mockRes,mockNext);
 
         chai.expect(oProxyHandler.proxyRequest).to.have.been.called.exactly(1);
-        chai.expect(oProxyHandler.proxyRequest).to.have.been.called.with(mMockConfig,mockReq,mockRes,mockNext);
+        chai.expect(oProxyHandler.proxyRequest).to.have.been.called.with(mMockConfig,mockReq,mockRes);
 
         chai.expect(oProxyHandler.proxyTunneling).to.have.been.called.exactly(0);
         chai.expect(oProxyHandler.proxyThroughProxy).to.have.been.called.exactly(0);
+
+        chai.expect(mockNext).to.have.been.called.exactly(0);
       });
     });
 
@@ -92,10 +94,12 @@ describe("/lib.Utils.prototype - Proxy Snippet", function() {
         oUtils.getProxyMiddleware()(mockReq,mockRes,mockNext);
 
         chai.expect(oProxyHandler.proxyThroughProxy).to.have.been.called.exactly(1);
-        chai.expect(oProxyHandler.proxyThroughProxy).to.have.been.called.with(mMockConfig,mockReq,mockRes,mockNext);
+        chai.expect(oProxyHandler.proxyThroughProxy).to.have.been.called.with(mMockConfig,mockReq,mockRes);
 
         chai.expect(oProxyHandler.proxyTunneling).to.have.been.called.exactly(0);
         chai.expect(oProxyHandler.proxyRequest).to.have.been.called.exactly(0);
+
+        chai.expect(mockNext).to.have.been.called.exactly(0);
       });
 
     });
@@ -129,10 +133,12 @@ describe("/lib.Utils.prototype - Proxy Snippet", function() {
         oUtils.getProxyMiddleware()(mockReq,mockRes,mockNext);
 
         chai.expect(oProxyHandler.proxyTunneling).to.have.been.called.exactly(1);
-        chai.expect(oProxyHandler.proxyTunneling).to.have.been.called.with(mMockConfig,mockReq,mockRes,mockNext);
+        chai.expect(oProxyHandler.proxyTunneling).to.have.been.called.with(mMockConfig,mockReq,mockRes);
 
         chai.expect(oProxyHandler.proxyThroughProxy).to.have.been.called.exactly(0);
         chai.expect(oProxyHandler.proxyRequest).to.have.been.called.exactly(0);
+
+        chai.expect(mockNext).to.have.been.called.exactly(0);
       });
 
     });
