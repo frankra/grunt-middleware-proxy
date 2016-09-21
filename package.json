@@ -4,7 +4,8 @@
   "description": "grunt-contrib-connect middleware proxy utility",
   "scripts": {
     "test": "mocha test/**/*spec.js test/**/**/*spec.js",
-    "tdd": "mocha test/**/*spec.js test/**/**/*spec.js  -w"
+    "tdd": "mocha test/**/*spec.js test/**/**/*spec.js  -w",
+    "coverage": "./node_modules/.bin/istanbul cover ./node_modules/mocha/bin/_mocha test/**/*spec.js test/**/**/*spec.js --report lcovonly -R --spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage"
   },
   "repository": {
     "type": "git",
