@@ -1,6 +1,6 @@
 {
   "name": "grunt-middleware-proxy",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "grunt-contrib-connect middleware proxy utility",
   "scripts": {
     "test": "mocha test/**/*spec.js test/**/**/*spec.js",
