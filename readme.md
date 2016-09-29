@@ -45,6 +45,7 @@ grunt.initConfig({
                     host: 'api_server_domain.com', //REQUIRED! Should not contain 'http://' or 'https://'
                     port: 8080, //Optional, defaults to 80 if http or 443 if https
                     https: false,//Optional, defaults to false
+                    rewriteHost: true,//Optional, defaults to true
                     auth: 'username:password', //Optional, adds the Authorization header
                     headers: {//Optional.
                         'header':'value'
@@ -74,6 +75,7 @@ grunt.initConfig({
                     host: 'api_server_domain.com', //REQUIRED! Should not contain 'http://' or 'https://'
                     port: 8080, //Optional, defaults to 80 if http or 443 if https
                     https: false,//Optional, defaults to false
+                    rewriteHost: true,//Optional, defaults to true
                     /*auth is not supported*/
                     headers: {//Optional.
                         'header':'value'
@@ -110,6 +112,7 @@ grunt.initConfig({
                     host: 'api_server_domain.com', //REQUIRED! Should not contain 'http://' or 'https://'
                     port: 8080, //Optional, defaults to 80 if http or 443 if https
                     https: false,//Optional, defaults to false
+                    rewriteHost: true,//Optional, defaults to true
                     auth: 'username:password', //Optional, adds the Authorization header
                     headers: {//Optional.
                         'header':'value'
@@ -157,6 +160,12 @@ The available configuration options from a given proxy based on the node [http](
 >Default: false
 
 >If the proxy should target a https end point on the destination server
+
+#### options.rewriteHost
+>Type: `Boolean`
+>Default: true
+
+>If the proxy should rewrite the host header to the target host. If your use case depends on proxying to localhost servers with port, try setting rewriteHost to false.
 
 #### options.port
 >Type: `Number`
